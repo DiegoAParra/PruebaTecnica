@@ -1,0 +1,22 @@
+﻿@model List<PruebaTecnicaGUI.Models.ProductModel>
+
+<h2>Product List</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Price</th>
+            <!-- Agrega columnas adicionales según la estructura de tu modelo -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.Title</td>
+                <td>@product.Price</td>
+                <!-- Mostrar otras propiedades según la estructura de tu modelo -->
+            </tr>
+        }
+    </tbody>
+</table>
