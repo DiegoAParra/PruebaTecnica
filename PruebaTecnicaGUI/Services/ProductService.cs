@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using PruebaTecnicaGUI.Models;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using PruebaTecnicaGUI.Models;
 
 namespace PruebaTecnicaGUI.Services
 {

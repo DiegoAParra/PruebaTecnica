@@ -1,22 +1,30 @@
 ﻿@model List<PruebaTecnicaGUI.Models.ProductModel>
 
-<h2>Product List</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Price</th>
-            <!-- Agrega columnas adicionales según la estructura de tu modelo -->
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var product in Model)
-        {
-            <tr>
-                <td>@product.Title</td>
-                <td>@product.Price</td>
-                <!-- Mostrar otras propiedades según la estructura de tu modelo -->
-            </tr>
-        }
-    </tbody>
-</table>
+@{
+    ViewBag.Title = "Productos";
+}
+
+<h2>Lista de productos</h2>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
+                    @foreach (var imagen in item.Images)
+                    {
+                        <p class="card-text"><img src="@imagen.Trim('[', ']').Replace("\"", "")" alt="@imagen.Trim('[', ']').Replace("\"", "")" class="d-block w-100"></p>
+                    }
+                    <p class="card-text"><strong>Precio :</strong> @Html.DisplayFor(modelItem => item.Price)</p>
+                    <div>
+                        @Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @Class = "btn btn-secondary mb-2" }) |
+                        @Html.ActionLink("Detalles", "Details", new { id = item.Id }, new { @Class = "btn btn-info mb-2" }) |
+                        @Html.ActionLink("Eliminar", "Delete", new { id = item.Id }, new { @Class = "btn btn-danger mb-2" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
