@@ -6,6 +6,10 @@
 
 <h2>Lista de productos</h2>
 
+<p>
+    @Html.ActionLink("Crear Nuevo", "Create", null, new { @Class = "btn btn-primary mt-5 mb-3" })
+</p>
+
 <div class="row">
     @foreach (var item in Model)
     {
@@ -13,10 +17,22 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
-                    @foreach (var imagen in item.Images)
-                    {
-                        <p class="card-text"><img src="@imagen.Trim('[', ']').Replace("\"", "")" alt="@imagen.Trim('[', ']').Replace("\"", "")" class="d-block w-100"></p>
-                    }
+                    <div id="carousel-@item.Id" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                            @foreach (var imagen in item.Images)
+                            {
+                                <div class="carousel-item @(imagen == item.Images.First() ? "active" : "")">
+                                    <img class="d-block w-100" src="@imagen.Trim('[', ']').Replace("\"", "")" alt="@imagen.Trim('[', ']').Replace("\"", "")">
+                                </div>
+                            }
+                        </div>
+                        <a class="carousel-control-prev" href="#carousel-@item.Id" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        </a>
+                        <a class="carousel-control-next" href="#carousel-@item.Id" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        </a>
+                    </div>
                     <p class="card-text"><strong>Precio :</strong> @Html.DisplayFor(modelItem => item.Price)</p>
                     <div>
                         @Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @Class = "btn btn-secondary mb-2" }) |
@@ -28,3 +44,23 @@
         </div>
     }
 </div>
+
+@section Scripts {
+    <script>
+        // Desactivar el desplazamiento automático del carrusel
+        $(document).ready(function () {
+            $('.carousel').carousel({
+                interval: false
+            });
+
+            // Manejar la navegación manual al hacer clic en los botones "Next" y "Previous"
+            $('.carousel-control-prev').on('click', function () {
+                $(this).closest('.carousel').carousel('prev');
+            });
+
+            $('.carousel-control-next').on('click', function () {
+                $(this).closest('.carousel').carousel('next');
+            });
+        });
+    </script>
+}
