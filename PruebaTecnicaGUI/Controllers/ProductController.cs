@@ -22,6 +22,35 @@ namespace PruebaTecnicaGUI.Controllers
         }
 
         [HttpGet]
+        public ActionResult Create()
+        {
+            // Devuelve la vista de creación de productos (formulario)
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create(ProductModel productCreateModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var createdProduct = await _productService.CreateProductAsync(productCreateModel);
+
+                if (createdProduct != null)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return HttpNotFound(); // Devuelve una respuesta HTTP 404 si la creación del producto falla
+                }
+            }
+
+            // Si el modelo no es válido, vuelve a mostrar la vista de creación con los errores
+            return View(productCreateModel);
+        }
+
+        [HttpGet]
         public async Task<ActionResult> Details(int id)
         {
             var product = await _productService.GetProductByIdAsync(id);
@@ -34,6 +63,43 @@ namespace PruebaTecnicaGUI.Controllers
             {
                 return HttpNotFound(); // Puedes devolver una página de error 404 si el producto no se encuentra
             }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> Edit(int id)
+        {
+            var product = await _productService.GetProductByIdAsync(id);
+
+            if (product != null)
+            {
+                return View(product); // Devuelve la vista de edición con los datos del producto
+            }
+            else
+            {
+                return HttpNotFound(); // Devuelve una respuesta HTTP 404 si el producto no se encuentra
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(int id, ProductModel productUpdateModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var updatedProduct = await _productService.UpdateProductAsync(id, productUpdateModel);
+
+                if (updatedProduct != null)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return HttpNotFound(); // Devuelve una respuesta HTTP 404 si el producto no se encuentra o la actualización falla
+                }
+            }
+
+            // Si el modelo no es válido, vuelve a mostrar la vista de edición con los errores
+            return View(productUpdateModel);
         }
 
         [HttpGet]
